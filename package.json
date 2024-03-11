@@ -1,0 +1,19 @@
+{
+	"name": "ac_sports_server",
+	"version": "1.0.0",
+	"description": "appleby sports server bruh",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"cheerio": "^1.0.0-rc.12",
+		"express.js": "^1.0.0",
+		"mysql2": "^3.6.5",
+		"node-schedule": "^2.1.1",
+		"qs": "^6.11.2"
+	}
+}
