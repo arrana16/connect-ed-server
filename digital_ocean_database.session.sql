@@ -98,3 +98,12 @@ SELECT * FROM Schools;
 
 --@block
 ALTER TABLE Schools ADD UNIQUE (abbreviation);
+
+--@block
+SELECT * FROM Games
+
+--@block
+ALTER TABLE Games ADD COLUMN location VARCHAR(255);
+
+--@block 
+SELECT * FROM Standings;

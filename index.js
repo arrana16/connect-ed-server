@@ -1,15 +1,18 @@
 import express from "express";
-import { getGames, getSports, getStandings, setStandings } from "./database.js";
+import {
+	getGames,
+	getSports,
+	getStandings,
+	setSports,
+	updateGamesStandings,
+} from "./database.js";
 
+import cron from "node-cron";
 const app = express();
 const port = 8080;
 
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
-});
-
-app.get("/", (req, res) => {
-	res.send("Hello, World!");
 });
 
 app.get("/sports", async (req, res) => {
@@ -39,3 +42,6 @@ app.get("/games/:leagueNum", async (req, res) => {
 		res.status(500).json({ error: err });
 	}
 });
+
+cron.schedule("*/20 * * * *", updateGamesStandings);
+cron.schedule("0 0 1 * *", setSports);

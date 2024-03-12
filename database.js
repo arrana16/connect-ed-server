@@ -7,6 +7,7 @@ const pool = mysql
 		user: "doadmin",
 		password: "AVNS_DgnObeixSssUi4MPE90",
 		database: "defaultdb",
+		port: 25060,
 	})
 	.promise();
 
@@ -21,24 +22,29 @@ export async function setSports() {
 export async function setStandings(leagueCode) {
 	const standings = await parseStandings(leagueCode);
 	const formattedStandings = standingsConvert(standings);
-
-	const result = await pool.query(
-		`INSERT INTO Standings(sport_id, school_id, wins, losses, ties, points, table_num, standings_code) VALUES ? 
-		ON DUPLICATE KEY UPDATE wins = VALUES(wins), losses = VALUES(losses), ties = VALUES(ties), points = VALUES(points);`,
-		[formattedStandings]
-	);
+	try {
+		const result = await pool.query(
+			"INSERT INTO Standings(sport_id, school_id, wins, losses, ties, points, table_num, standings_code) VALUES ? ON DUPLICATE KEY UPDATE wins = VALUES(wins), losses = VALUES(losses), ties = VALUES(ties), points = VALUES(points);",
+			[formattedStandings]
+		);
+		return result;
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 export async function setGames(leagueCode) {
 	const games = await parseGames(leagueCode);
 	const formattedGames = gamesConvert(games);
-	console.log(formattedGames);
-	const result = await pool.query(
-		`INSERT IGNORE INTO Games(sport_id, home_id, away_id, home_score, away_score, game_date, game_time, location, game_code) VALUES ?
-		ON DUPLICATE KEY UPDATE home_score = VALUES(home_score), away_score = VALUES(away_score);
-		`,
-		[formattedGames]
-	);
+	try {
+		const result = await pool.query(
+			"INSERT INTO Games(sport_id, home_id, away_id, home_score, away_score, game_date, game_time, location, game_code) VALUES ? ON DUPLICATE KEY UPDATE home_score = VALUES(home_score), away_score = VALUES(away_score);",
+			[formattedGames]
+		);
+		return result;
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 export async function getSportID(leagueCode) {
@@ -66,9 +72,7 @@ export async function getSchoolIDAbbrev(schoolAbbrev) {
 }
 
 export async function getSports() {
-	console.log("getting sports");
 	const result = await pool.query("SELECT * FROM Sports;");
-	console.log(result);
 	return result[0];
 }
 
@@ -159,4 +163,69 @@ function gamesConvert(games) {
 	}
 
 	return result;
+}
+
+export async function updateGamesStandings() {
+	const sports = await getSports();
+	const today = new Date();
+	const season = getSeason(today);
+	let filteredSports;
+	if (season != "Unknown") {
+		filteredSports = sports.filter((sport) => sport.term === season);
+	} else {
+		filteredSports = sports;
+	}
+
+	const gamePromises = filteredSports.map(async (sport) => {
+		const games = await setGames(filteredSports.league_code);
+		return games;
+	});
+
+	const standingsPromises = filteredSports.map(async (sport) => {
+		const standings = await setStandings(filteredSports.league_code);
+		return standings;
+	});
+	await Promise.all(gamePromises);
+	await Promise.all(standingsPromises);
+}
+
+function getSeason(date) {
+	const month = date.getMonth();
+	const day = date.getDate();
+	let season;
+
+	switch (month) {
+		case 8: // September
+		case 9: // October
+			season = "Fall";
+			break;
+		case 10: // November
+			if (day >= 10) {
+				season = "Winter";
+			} else {
+				season = "Fall";
+			}
+			break;
+		case 11: // December
+		case 0: // January
+		case 1: // February
+			season = "Winter";
+			break;
+		case 2: // March
+			if (day >= 20) {
+				season = "Spring";
+			} else {
+				season = "Winter";
+			}
+			break;
+		case 3: // April
+		case 4: // May
+			season = "Spring";
+			break;
+		default:
+			season = "Unknown";
+			break;
+	}
+
+	return season;
 }
