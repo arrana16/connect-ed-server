@@ -68,6 +68,7 @@ export async function getSchoolIDAbbrev(schoolAbbrev) {
 export async function getSports() {
 	console.log("getting sports");
 	const result = await pool.query("SELECT * FROM Sports;");
+	console.log(result);
 	return result[0];
 }
 

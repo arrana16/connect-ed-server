@@ -26,6 +26,7 @@ app.get("/standings/:leagueNum", async (req, res) => {
 		const standings = await getStandings(req.params.leagueNum);
 		res.status(200).json({ data: standings });
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({ error: err });
 	}
 });
