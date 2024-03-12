@@ -1,5 +1,5 @@
 import express from "express";
-import { getGames, getSports, getStandings } from "./database.js";
+import { getGames, getSports, getStandings, setStandings } from "./database.js";
 
 const app = express();
 const port = 8080;

@@ -86,8 +86,8 @@ ALTER TABLE Standings DROP COLUMN games_played;
 
 --@block
 INSERT INTO Schools(school_name, abbreviation, logo_dir) VALUES
-    /*("Appleby College", "AC", ""),
-    ("Upper Canada COllege", "UCC", "")*/
+    ("Appleby College", "AC", ""),
+    ("Upper Canada College", "UCC", ""),
     ("St. Andrew's College", "SAC", ""),
     ("St. Michael's College", "SMC", ""),
     ("Crescent School", "CS", ""),

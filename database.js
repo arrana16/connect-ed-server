@@ -3,10 +3,10 @@ import { parseSports, parseStandings, parseGames } from "./games.js";
 
 const pool = mysql
 	.createPool({
-		host: "127.0.0.1",
-		user: "root",
-		password: "Abqaiq258*",
-		database: "ac_sports",
+		host: "db-mysql-nyc1-07436-do-user-14766812-0.c.db.ondigitalocean.com",
+		user: "doadmin",
+		password: "AVNS_DgnObeixSssUi4MPE90",
+		database: "defaultdb",
 	})
 	.promise();
 
@@ -23,7 +23,8 @@ export async function setStandings(leagueCode) {
 	const formattedStandings = standingsConvert(standings);
 
 	const result = await pool.query(
-		"INSERT IGNORE INTO Standings(sport_id, school_id, wins, losses, ties, points, table_num, standings_code) VALUES ?;",
+		`INSERT INTO Standings(sport_id, school_id, wins, losses, ties, points, table_num, standings_code) VALUES ? 
+		ON DUPLICATE KEY UPDATE wins = VALUES(wins), losses = VALUES(losses), ties = VALUES(ties), points = VALUES(points);`,
 		[formattedStandings]
 	);
 }
@@ -33,7 +34,9 @@ export async function setGames(leagueCode) {
 	const formattedGames = gamesConvert(games);
 	console.log(formattedGames);
 	const result = await pool.query(
-		"INSERT IGNORE INTO Games(sport_id, home_id, away_id, home_score, away_score, game_date, game_time, location, game_code) VALUES ?;",
+		`INSERT IGNORE INTO Games(sport_id, home_id, away_id, home_score, away_score, game_date, game_time, location, game_code) VALUES ?
+		ON DUPLICATE KEY UPDATE home_score = VALUES(home_score), away_score = VALUES(away_score);
+		`,
 		[formattedGames]
 	);
 }

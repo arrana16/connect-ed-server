@@ -12,6 +12,19 @@
 			"name": "ac_sports",
 			"database": "ac_sports",
 			"username": "root"
+		},
+		{
+			"mysqlOptions": {
+				"authProtocol": "default",
+				"enableSsl": "Disabled"
+			},
+			"previewLimit": 50,
+			"server": "db-mysql-nyc1-07436-do-user-14766812-0.c.db.ondigitalocean.com",
+			"port": 25060,
+			"driver": "MySQL",
+			"name": "digital_ocean_database",
+			"database": "defaultdb",
+			"username": "doadmin"
 		}
 	]
 }
