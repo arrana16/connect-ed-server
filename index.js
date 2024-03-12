@@ -43,5 +43,10 @@ app.get("/games/:leagueNum", async (req, res) => {
 	}
 });
 
-cron.schedule("*/20 * * * *", updateGamesStandings);
-cron.schedule("0 0 1 * *", setSports);
+cron.schedule("*/20 * * * *", async () => {
+	await updateGamesStandings();
+});
+
+cron.schedule("0 0 1 * *", async () => {
+	await setSports();
+});
