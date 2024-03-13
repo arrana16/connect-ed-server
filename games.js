@@ -201,7 +201,6 @@ export async function parseStandings(leagueNum) {
 	});
 	// console.log(standings);
 	const filteredStandings = standings.filter((item) => item !== undefined);
-	console.log(filteredStandings);
 	return filteredStandings;
 }
 

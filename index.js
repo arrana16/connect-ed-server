@@ -3,11 +3,10 @@ import {
 	getGames,
 	getSports,
 	getStandings,
-	setSports,
+	setGames,
 	updateGamesStandings,
 } from "./database.js";
 
-import cron from "node-cron";
 const app = express();
 const port = 8080;
 
@@ -43,10 +42,6 @@ app.get("/games/:leagueNum", async (req, res) => {
 	}
 });
 
-cron.schedule("*/20 * * * *", async () => {
-	await updateGamesStandings();
-});
+cron.schedule("*/20 * * * *", updateGamesStandings);
 
-cron.schedule("0 0 1 * *", async () => {
-	await setSports();
-});
+cron.schedule("0 0 1 * *", setGames);

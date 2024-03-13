@@ -166,6 +166,7 @@ function gamesConvert(games) {
 }
 
 export async function updateGamesStandings() {
+	console.log("Updating games and standings");
 	const sports = await getSports();
 	const today = new Date();
 	const season = getSeason(today);
@@ -177,16 +178,18 @@ export async function updateGamesStandings() {
 	}
 
 	const gamePromises = filteredSports.map(async (sport) => {
-		const games = await setGames(filteredSports.league_code);
+		const games = await setGames(sport.league_code);
 		return games;
 	});
 
 	const standingsPromises = filteredSports.map(async (sport) => {
-		const standings = await setStandings(filteredSports.league_code);
+		const standings = await setStandings(sport.league_code);
 		return standings;
 	});
 	await Promise.all(gamePromises);
 	await Promise.all(standingsPromises);
+
+	console.log("Games and standings updated");
 }
 
 function getSeason(date) {
@@ -212,7 +215,7 @@ function getSeason(date) {
 			season = "Winter";
 			break;
 		case 2: // March
-			if (day >= 20) {
+			if (day >= 10) {
 				season = "Spring";
 			} else {
 				season = "Winter";
