@@ -6,6 +6,7 @@ import {
 	setGames,
 	updateGamesStandings,
 } from "./database.js";
+import cron from "node-cron";
 
 const app = express();
 const port = 8080;
