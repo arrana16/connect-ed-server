@@ -1,4 +1,5 @@
 import express from "express";
+import dotenv from "dotenv";
 import {
 	getGames,
 	getSports,
@@ -9,7 +10,7 @@ import {
 import cron from "node-cron";
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT;
 
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);

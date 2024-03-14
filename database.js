@@ -1,13 +1,15 @@
 import mysql from "mysql2";
 import { parseSports, parseStandings, parseGames } from "./games.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const pool = mysql
 	.createPool({
-		host: "db-mysql-nyc1-07436-do-user-14766812-0.c.db.ondigitalocean.com",
-		user: "doadmin",
-		password: "AVNS_DgnObeixSssUi4MPE90",
-		database: "defaultdb",
-		port: 25060,
+		host: process.env.HOST,
+		user: process.env.DB_USERNAME,
+		password: process.env.PASSWORD,
+		database: process.env.DATABASE,
+		port: process.env.DBPORT,
 	})
 	.promise();
 
