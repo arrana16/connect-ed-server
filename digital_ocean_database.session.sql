@@ -107,3 +107,4 @@ ALTER TABLE Games ADD COLUMN location VARCHAR(255);
 
 --@block 
 SELECT * FROM Standings;
+

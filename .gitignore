@@ -1,1 +1,2 @@
 .env
+digital_ocean_database.session.sql
