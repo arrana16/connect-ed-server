@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import {
+	getAllGames,
 	getGames,
 	getSports,
 	getStandings,
@@ -38,6 +39,15 @@ app.get("/standings/:leagueNum", async (req, res) => {
 app.get("/games/:leagueNum", async (req, res) => {
 	try {
 		const games = await getGames(req.params.leagueNum);
+		res.status(200).json({ data: games });
+	} catch (err) {
+		res.status(500).json({ error: err });
+	}
+});
+
+app.get("/games", async (req, res) => {
+	try {
+		const games = await getAllGames();
 		res.status(200).json({ data: games });
 	} catch (err) {
 		res.status(500).json({ error: err });

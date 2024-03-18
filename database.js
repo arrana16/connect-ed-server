@@ -80,7 +80,7 @@ export async function getSports() {
 
 export async function getStandings(leagueNum) {
 	const result = await pool.query(
-		"SELECT table_num, school_id, wins, losses, ties, points FROM Standings INNER JOIN Sports ON Standings.sport_id = Sports.id WHERE Sports.league_code = ?;",
+		"SELECT table_num, school_id, wins, losses, ties, points, school_name, abbreviation, logo_dir FROM Standings INNER JOIN Sports ON Standings.sport_id = Sports.id INNER JOIN Schools ON school_id = Schools.id WHERE Sports.league_code = ?;",
 		[leagueNum]
 	);
 	return result[0];
@@ -88,8 +88,30 @@ export async function getStandings(leagueNum) {
 
 export async function getGames(leagueNum) {
 	const result = await pool.query(
-		"SELECT home_id, away_id, home_score, away_score, highlights_url, game_time, game_code, location, game_date FROM Games INNER JOIN Sports ON Games.sport_id = Sports.id WHERE Sports.league_code = ?;",
+		`SELECT G.home_id, SH.school_name, SH.abbreviation, SH.logo_dir AS home_school_name,
+				G.away_id, SA.school_name, SA.abbreviation, SA.logo_dir AS away_school_name,
+				G.home_score, G.away_score, G.highlights_url,
+				G.game_time, G.game_code, G.location, G.game_date
+		FROM Games G
+		INNER JOIN Sports S ON G.sport_id = S.id
+		INNER JOIN Schools SH ON G.home_id = SH.id
+		INNER JOIN Schools SA ON G.away_id = SA.id
+		WHERE Sports.league_code = ?;`,
 		[leagueNum]
+	);
+	return result[0];
+}
+
+export async function getAllGames() {
+	const result = await pool.query(
+		`SELECT G.home_id, SH.school_name, SH.abbreviation, SH.logo_dir AS home_school_name,
+				G.away_id, SA.school_name, SA.abbreviation, SA.logo_dir AS away_school_name,
+				G.home_score, G.away_score, G.highlights_url,
+				G.game_time, G.game_code, G.location, G.game_date
+		FROM Games G
+		INNER JOIN Sports S ON G.sport_id = S.id
+		INNER JOIN Schools SH ON G.home_id = SH.id
+		INNER JOIN Schools SA ON G.away_id = SA.id;`
 	);
 	return result[0];
 }
