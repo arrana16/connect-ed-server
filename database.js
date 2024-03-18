@@ -88,8 +88,8 @@ export async function getStandings(leagueNum) {
 
 export async function getGames(leagueNum) {
 	const result = await pool.query(
-		`SELECT G.home_id, SH.school_name, SH.abbreviation, SH.logo_dir AS home_school_name,
-				G.away_id, SA.school_name, SA.abbreviation, SA.logo_dir AS away_school_name,
+		`SELECT G.home_id, SH.school_name, SH.abbreviation, SH.logo_dir,
+				G.away_id, SA.school_name, SA.abbreviation, SA.logo_dir,
 				G.home_score, G.away_score, G.highlights_url,
 				G.game_time, G.game_code, G.location, G.game_date
 		FROM Games G
@@ -104,8 +104,8 @@ export async function getGames(leagueNum) {
 
 export async function getAllGames() {
 	const result = await pool.query(
-		`SELECT G.home_id, SH.school_name, SH.abbreviation, SH.logo_dir AS home_school_name,
-				G.away_id, SA.school_name, SA.abbreviation, SA.logo_dir AS away_school_name,
+		`SELECT G.home_id, SH.school_name, SH.abbreviation, SH.logo_dir,
+				G.away_id, SA.school_name, SA.abbreviation, SA.logo_dir,
 				G.home_score, G.away_score, G.highlights_url,
 				G.game_time, G.game_code, G.location, G.game_date
 		FROM Games G
