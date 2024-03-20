@@ -220,9 +220,27 @@ export async function parseGames(leagueNum) {
 	const gamePromises = $("#scheduleTable tr")
 		.map(async (index, element) => {
 			const $tdElements = $(element).find("td");
-			const date = $tdElements.eq(0).text().trim().substring(4, 10);
-			let time = $tdElements.eq(1).text().trim();
+			let date = $tdElements.eq(0).text().trim().substring(4, 10);
+			const targetMonth = date.split(" ")[0];
+			const targetDay = date.split(" ")[1];
+			const targetMonthIndex = getMonthIndex(targetMonth);
+			const today = new Date();
+			const month = today.getMonth() + 1;
+			let year = today.getFullYear();
+			if (month >= 9) {
+				year++;
+			}
+			if (targetMonthIndex >= 9) {
+				year--;
+			}
+			const stringTargetMonthIndex =
+				targetMonthIndex > 9
+					? targetMonthIndex.toString()
+					: `0${targetMonthIndex}`;
 
+			date = `${year}-${stringTargetMonthIndex}-${targetDay}`;
+
+			let time = $tdElements.eq(1).text().trim();
 			time.substring(6, 7) == "a"
 				? (time = time.substring(0, 6) + "AM")
 				: (time = time.substring(0, 6) + "PM");
@@ -262,4 +280,8 @@ export async function parseGames(leagueNum) {
 	const games = await Promise.all(gamePromises);
 	const filteredGames = games.filter((item) => item !== undefined);
 	return filteredGames;
+}
+
+function getMonthIndex(monthName) {
+	return new Date(Date.parse(monthName + " 1, 2000")).getMonth() + 1;
 }

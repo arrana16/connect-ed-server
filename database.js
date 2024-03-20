@@ -40,9 +40,10 @@ export async function setGames(leagueCode) {
 	const formattedGames = gamesConvert(games);
 	try {
 		const result = await pool.query(
-			"INSERT INTO Games(sport_id, home_id, away_id, home_score, away_score, game_date, game_time, location, game_code) VALUES ? ON DUPLICATE KEY UPDATE home_score = VALUES(home_score), away_score = VALUES(away_score);",
+			"INSERT INTO Games(sport_id, home_id, away_id, home_score, away_score, game_date, game_time, location, game_code) VALUES ? ON DUPLICATE KEY UPDATE home_score = VALUES(home_score), away_score = VALUES(away_score), game_date = VALUES(game_date), game_code = VALUES(game_code);",
 			[formattedGames]
 		);
+		console.log(result);
 		return result;
 	} catch (err) {
 		console.log(err);

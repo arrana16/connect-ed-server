@@ -9,6 +9,7 @@ import {
 	updateGamesStandings,
 } from "./database.js";
 import cron from "node-cron";
+import { parseGames } from "./games.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -54,6 +55,8 @@ app.get("/games", async (req, res) => {
 	}
 });
 
-cron.schedule("*/20 * * * *", updateGamesStandings);
+updateGamesStandings();
 
-cron.schedule("0 0 1 * *", setGames);
+// cron.schedule("*/20 * * * *", updateGamesStandings);
+
+// cron.schedule("0 0 1 * *", setGames);
