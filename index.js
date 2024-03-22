@@ -55,8 +55,6 @@ app.get("/games", async (req, res) => {
 	}
 });
 
-updateGamesStandings();
+cron.schedule("*/20 * * * *", updateGamesStandings);
 
-// cron.schedule("*/20 * * * *", updateGamesStandings);
-
-// cron.schedule("0 0 1 * *", setGames);
+cron.schedule("0 0 1 * *", setGames);
