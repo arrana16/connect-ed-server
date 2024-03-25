@@ -92,7 +92,7 @@ export async function getGames(leagueNum) {
 		`SELECT G.home_id, SH.school_name, SH.abbreviation, SH.logo_dir,
 				G.away_id, SA.school_name, SA.abbreviation, SA.logo_dir,
 				G.home_score, G.away_score, G.highlights_url,
-				G.game_time, G.game_code, G.location, G.game_date, S.term as term
+				G.game_time, G.game_code, G.location, G.game_date, G.league_code S.term as term
 		FROM Games G
 		INNER JOIN Sports S ON G.sport_id = S.id
 		INNER JOIN Schools SH ON G.home_id = SH.id
@@ -108,7 +108,7 @@ export async function getAllGames() {
 		`SELECT G.home_id, SH.school_name as home_name, SH.abbreviation as home_abbr, SH.logo_dir as home_logo,
 				G.away_id, SA.school_name as away_name, SA.abbreviation as away_abr, SA.logo_dir as away_logo,
 				G.home_score, G.away_score, G.highlights_url,
-				G.game_time, G.game_code, G.location, G.game_date, S.name as sports_name, S.id as sports_id, S.term as term
+				G.game_time, G.game_code, G.location, G.game_date, S.league_code as league_code, S.name as sports_name, S.id as sports_id, S.term as term
 		FROM Games G
 		INNER JOIN Sports S ON G.sport_id = S.id
 		INNER JOIN Schools SH ON G.home_id = SH.id
