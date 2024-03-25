@@ -87,6 +87,13 @@ export async function getStandings(leagueNum) {
 	return result[0];
 }
 
+export async function getAllStandings() {
+	const result = await pool.query(
+		"SELECT table_num, school_id, wins, losses, ties, points, school_name, abbreviation, logo_dir, Standings.sport_id FROM Standings INNER JOIN Sports ON Standings.sport_id = Sports.id INNER JOIN Schools ON school_id = Schools.id;"
+	);
+	return result[0];
+}
+
 export async function getGames(leagueNum) {
 	const result = await pool.query(
 		`SELECT G.home_id, SH.school_name, SH.abbreviation, SH.logo_dir,

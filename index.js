@@ -7,9 +7,9 @@ import {
 	getStandings,
 	setGames,
 	updateGamesStandings,
+	getAllStandings,
 } from "./database.js";
 import cron from "node-cron";
-import { parseGames } from "./games.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -30,6 +30,16 @@ app.get("/sports", async (req, res) => {
 app.get("/standings/:leagueNum", async (req, res) => {
 	try {
 		const standings = await getStandings(req.params.leagueNum);
+		res.status(200).json({ data: standings });
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: err });
+	}
+});
+
+app.get("/standings", async (req, res) => {
+	try {
+		const standings = await getAllStandings();
 		res.status(200).json({ data: standings });
 	} catch (err) {
 		console.log(err);
