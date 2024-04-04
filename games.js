@@ -35,7 +35,6 @@ export async function inSport(leagueNum, name) {
 						teamName += text.charAt(counter);
 						counter++;
 					}
-					//console.log(teamName);
 					teamName = teamName.substring(0, teamName.length - 2);
 					if (teamName == "Appleby College") {
 						insport = true;
@@ -199,7 +198,6 @@ export async function parseStandings(leagueNum) {
 	standings2.forEach((element) => {
 		standings.push(element);
 	});
-	// console.log(standings);
 	const filteredStandings = standings.filter((item) => item !== undefined);
 	return filteredStandings;
 }
@@ -260,7 +258,6 @@ export async function parseGames(leagueNum) {
 			const awayScore = $tdElements.eq(5).text().trim();
 			if (home == "AC" || away == "AC") {
 				let home_id = await getSchoolIDAbbrev(home);
-				// console.log(home_id);
 				let away_id = await getSchoolIDAbbrev(away);
 				const game_code = `G_${sport_id}_${home_id}_${away_id}_${date}`;
 				return {
