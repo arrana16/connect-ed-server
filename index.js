@@ -1,5 +1,6 @@
 import express from "express";
-import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import {
 	getAllGames,
 	getGames,
@@ -10,6 +11,9 @@ import {
 	getAllStandings,
 } from "./database.js";
 import cron from "node-cron";
+
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
 
 const app = express();
 const port = process.env.PORT;
@@ -65,6 +69,10 @@ app.get("/games", async (req, res) => {
 	}
 });
 
+app.get("/privacy_policy", (req, res) => {
+	res.sendFile(path.join(__dirname, "/privacyPolicy.html"));
+	res.status(200);
+});
 cron.schedule("*/20 * * * *", updateGamesStandings);
 
 cron.schedule("0 0 1 * *", setGames);
